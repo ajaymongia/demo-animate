@@ -1,0 +1,150 @@
+<meta charset="utf-8">
+<title>Motion Kit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Unbounded:wght@700&display=swap">
+<style>
+/* Layout: wordmark + download row, then the two renders side by side. */
+:root{
+  --bg:#E8EDF4; --surface:#F7F9FC; --ink:#0D1A31; --muted:#56667F; --line:#CDD6E2;
+  --accent:#1B5FD6; --accent-ink:#FFFFFF; --stage:#E3E8EE;
+  --font-display:"Unbounded","Arial Rounded MT Bold",system-ui,sans-serif;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#09111F; --surface:#101A2E; --ink:#E3EBF6; --muted:#8C9BB4; --line:#21304B;
+  --accent:#5CC6FF; --accent-ink:#04122A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#09111F; --surface:#101A2E; --ink:#E3EBF6; --muted:#8C9BB4; --line:#21304B;
+  --accent:#5CC6FF; --accent-ink:#04122A; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.5;
+  padding-block:28px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:18px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 24px}
+.brand{display:grid;gap:6px;min-width:0}
+h1{font-family:var(--font-display);font-weight:700;font-size:clamp(28px,4.4vw,42px);letter-spacing:-.01em;line-height:1;margin:0}
+.meta{color:var(--muted);font-size:13px;font-family:var(--font-mono);display:flex;flex-wrap:wrap;gap:4px 14px}
+
+.downloads{display:flex;flex-wrap:wrap;gap:8px}
+.dl{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);background:var(--surface);border-radius:999px;
+  padding:9px 16px 9px 13px;font-size:14px;font-weight:500;cursor:pointer}
+.dl:hover{border-color:var(--accent)}
+.dl.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.dl svg{width:16px;height:16px;flex:none}
+.dl small{font-family:var(--font-mono);font-size:11.5px;font-weight:400;opacity:.75}
+
+.stages{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.stages{grid-template-columns:1fr}}
+figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px;display:grid;gap:10px;min-width:0}
+.stage{aspect-ratio:1/1;max-width:100%;border-radius:9px;overflow:hidden;background:var(--stage);position:relative}
+.stage > svg{display:block;width:100%;height:100%}
+#stage-lottie{width:100%;height:100%}
+.stage .err{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:#3D4C63;font-size:14px}
+figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px;padding:0 4px 2px}
+figcaption b{font-weight:600;font-size:14px}
+figcaption span{color:var(--muted);font-size:12px;font-family:var(--font-mono)}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);
+  padding:9px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>Motion Kit</h1>
+      <div class="meta"><span>1024 × 1024</span><span>60 fps</span><span>4 s loop</span></div>
+    </div>
+    <div class="downloads" role="group" aria-label="Downloads">
+      <button class="dl primary" type="button" data-file="lottie"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10"/></svg>Lottie <small>.json · %%JSON_KB%%</small></button>
+      <button class="dl" type="button" data-file="svg"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10"/></svg>SVG <small>.svg · %%SVG_KB%%</small></button>
+      <button class="dl" type="button" data-file="preview"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10"/></svg>Preview <small>.html · %%PREVIEW_KB%%</small></button>
+    </div>
+  </header>
+
+  <section class="stages" aria-label="Preview">
+    <figure>
+      <div class="stage" id="stage-svg">%%SVG_INLINE%%</div>
+      <figcaption><b>Animated SVG</b><span>motion-kit.svg</span></figcaption>
+    </figure>
+    <figure>
+      <div class="stage"><div id="stage-lottie"></div></div>
+      <figcaption><b>Lottie</b><span>motion-kit.json</span></figcaption>
+    </figure>
+  </section>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script type="application/json" id="mk-lottie">%%LOTTIE%%</script>
+<script type="application/json" id="mk-svg-text">%%SVG_TEXT%%</script>
+<script type="application/json" id="mk-preview-text">%%PREVIEW_TEXT%%</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+<script>
+(() => {
+  const FPS = 60;
+  const text = id => document.getElementById(id).textContent;
+  const files = {
+    lottie: { name: 'motion-kit.json', type: 'application/json', data: text('mk-lottie') },
+    svg: { name: 'motion-kit.svg', type: 'image/svg+xml', data: JSON.parse(text('mk-svg-text')) },
+    preview: { name: 'motion-kit-preview.html', type: 'text/html', data: JSON.parse(text('mk-preview-text')) },
+  };
+
+  // Both renders run from one clock so they stay in step.
+  const svgEl = document.querySelector('#stage-svg svg');
+  const cssAnims = svgEl.getAnimations ? svgEl.getAnimations({ subtree: true }) : [];
+  cssAnims.forEach(a => a.pause());
+  let lot = null;
+  const host = document.getElementById('stage-lottie');
+  if (window.lottie) {
+    lot = lottie.loadAnimation({ container: host, renderer: 'svg', loop: true, autoplay: false,
+      animationData: JSON.parse(files.lottie.data), rendererSettings: { preserveAspectRatio: 'xMidYMid meet' } });
+  } else {
+    host.innerHTML = '<div class="err">The Lottie player did not load. Check the connection and reload the page.</div>';
+  }
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let frame = reduced ? 82 : 0, last = null;
+  function draw() {
+    for (const a of cssAnims) a.currentTime = frame / FPS * 1000;
+    if (lot) { try { lot.goToAndStop(frame, true); } catch (e) {} }
+  }
+  function loop(ts) {
+    if (last !== null) frame = (frame + (ts - last) / 1000 * FPS) % 240;
+    last = ts; draw(); requestAnimationFrame(loop);
+  }
+  draw();
+  if (!reduced) requestAnimationFrame(loop);
+
+  // Downloads: the viewer's save prompt inside claude.ai, a plain browser download elsewhere.
+  const toast = document.getElementById('toast');
+  let tt;
+  function say(msg) { toast.textContent = msg; toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 2400); }
+  let saver = null;
+  if (window.claude && claude.use) claude.use('downloads').then(d => { saver = d; }).catch(() => {});
+  function browserSave(f) {
+    const url = URL.createObjectURL(new Blob([f.data], { type: f.type }));
+    const a = document.createElement('a'); a.href = url; a.download = f.name;
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  }
+  document.querySelectorAll('.dl').forEach(btn => btn.addEventListener('click', () => {
+    const f = files[btn.dataset.file];
+    if (!saver) { browserSave(f); return; }
+    saver.save({ filename: f.name, data: f.data }).then(r => {
+      if (r && r.status === 'saved') say('Saved ' + f.name);
+    }).catch(e => {
+      const code = e && e.code;
+      if (code === 'declined') return;
+      if (code === 'rate_limited') say('A save prompt is already open. Finish it, then try again.');
+      else say('Downloads are not available in this view.');
+    });
+  }));
+})();
+</script>
